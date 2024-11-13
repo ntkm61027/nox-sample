@@ -1,4 +1,4 @@
-from nox_demo.main import make_upper
+from nox_sample.main import make_upper
 
 
 def test_make_upper():
