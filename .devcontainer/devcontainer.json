@@ -1,0 +1,32 @@
+{
+    "name": "Nox Demo with UV",
+    "image": "mcr.microsoft.com/devcontainers/python:3.11",
+    "postCreateCommand": "curl -LsSf https://astral.sh/uv/install.sh | sh && uv tool install nox && uv sync && uv pip install -e .",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance"
+            ],
+            "settings": {
+                "workbench.colorTheme": "Default Dark+",
+                "files.exclude": {
+                    "**/*.egg-info": true,
+                    "**/__pycache__": true,
+                    "build/": true,
+                    "dist/": true,
+                    "*.py[oc]": true,
+                    "**/.pytest_cache": true,
+                    "**/.ruff_cache/": true
+                }
+            }
+        }
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/common-utils:2": {
+            "installZsh": false,
+            "installOhMyZsh": false,
+            "upgradePackages": false
+        }
+    }
+}
