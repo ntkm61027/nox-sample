@@ -1,0 +1,41 @@
+name: nox tests matrix
+
+on: [pull_request, workflow_dispatch]
+
+env:
+  UV_SYSTEM_PYTHON: 1
+
+jobs:
+  generate-jobs:
+    runs-on: ubuntu-latest
+    outputs:
+      session: ${{ steps.set-matrix.outputs.session }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: wntrblm/nox@2024.10.09
+      - id: set-matrix
+        run: echo session=$(nox --json -l | jq -c '[.[].session]') | tee --append $GITHUB_OUTPUT
+
+  run-tests:
+    needs: generate-jobs
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        session: ${{ fromJson(needs.generate-jobs.outputs.session) }}
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "0.5.1"
+          enable-cache: true
+          cache-dependency-glob: "pyproject.toml"
+      
+      - name: Setup Nox
+        uses: wntrblm/nox@2024.10.09
+        with:
+          python-versions: "3.11, 3.12"
+      
+      - name: Run tests
+        run: nox -s ${{ matrix.session }}
