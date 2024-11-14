@@ -50,9 +50,8 @@ nox -s tests
   
 ## cf. noxを使わずに直接コマンドを実行する場合
 
+### uv run
 💡 こちらは uv の仮想環境 `.venv` で実行される
-
-### test
 ```bash
 uv run pytest
 ```
@@ -60,28 +59,40 @@ uv run pytest
 # 複数バージョン
 
 # Python 3.11
-uv venv --python=3.11
+uv python pin 3.11
 uv pip install -e .
 uv run pytest
 
 # Python 3.12
-uv venv --python=3.12
+uv python pin 3.12
 uv pip install -e .
 uv run pytest
 
 # Python 3.13
-uv venv --python=3.13
+uv python pin 3.13
 uv pip install -e .
 uv run pytest
 ```
-
-### lint
 ```
 uv run ruff check .
 uv run ruff format .
 ```
-
-### 型チェック
 ```bash
 uv run mypy src
+```
+
+### uv tool run / uvx
+💡 インストールせずキャッシュディレクトリの一時的な環境で実行
+```bash
+uvx pytest
+
+# バージョン指定
+uvx --python 3.12 pytest
+```
+```
+uvx ruff check
+uvx ruff format
+```
+```bash
+uvx mypy src
 ```
